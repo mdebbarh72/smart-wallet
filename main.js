@@ -245,3 +245,37 @@ document.addEventListener('DOMContentLoaded', () => {
 function closeDeleteExpenseModal() {
     document.getElementById('delete-expense-modal').classList.add('hidden');
 }
+
+
+
+// allTransactions.forEach(transaction => {
+            //     const isIncome = transaction.type === 'income';
+            //     const transactionElement = document.createElement('div');
+            //     transactionElement.className = 'flex items-center justify-between py-3 border-b border-gray-200 hover:bg-gray-50 px-2 rounded';
+                
+            //     transactionElement.innerHTML = `
+            //         <div class="flex items-center space-x-3">
+            //             <div class="${isIncome ? 'bg-green-100' : 'bg-red-100'} rounded-full p-2">
+            //                 <svg class="w-4 h-4 ${isIncome ? 'text-green-600' : 'text-red-600'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            //                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isIncome ? 'M12 4v16m8-8H4' : 'M20 12H4'}"></path>
+            //                 </svg>
+            //             </div>
+            //             <div>
+            //                 <p class="font-medium text-gray-800">${transaction.description}</p>
+            //                 <p class="text-xs text-gray-500">${transaction.category} • ${formatDate(transaction.date)}</p>
+            //             </div>
+            //         </div>
+            //         <span class="font-bold ${isIncome ? 'text-green-600' : 'text-red-600'}">
+            //             ${isIncome ? '+' : '-'}$${transaction.amount.toFixed(2)}
+            //         </span>
+            //     `;
+                
+            //     transactionsList.appendChild(transactionElement);
+            // });
+
+        // Format date
+        // function formatDate(dateString) {
+        //     const date = new Date(dateString);
+        //     const options = { month: 'short', day: 'numeric', year: 'numeric' };
+        //     return date.toLocaleDateString('en-US', options);
+        // }
