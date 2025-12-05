@@ -30,7 +30,7 @@ else if(isset($_POST['action']) && $_POST['action']=="edit")
 
     try
     {
-        $sql= $pdo->prepare("UPDATE incomes SET amount=? , description=?, created_at=? WHERE id=?");
+        $sql= $pdo->prepare("UPDATE incomes SET amount=? , description=?, income_date=? WHERE id=?");
         $sql->execute([$amount, $description, $date, $id]);
     }
     catch (PDOException $e)

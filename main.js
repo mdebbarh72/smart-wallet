@@ -75,15 +75,6 @@ function closeEditIncomeModal() {
 function closeDeleteIncomeModal() {
     document.getElementById('delete-income-modal').classList.add('hidden');
 }
-// Edit Expense Modal
-function openEditExpenseModal(idx) {
-    currentEditId = idx;
-    const expense = expenses[idx];
-    document.getElementById('edit-expense-name').value = expense.name;
-    document.getElementById('edit-expense-amount').value = expense.amount;
-    document.getElementById('edit-expense-date').value = expense.date;
-    document.getElementById('edit-expense-modal').classList.remove('hidden');
-}
 
 function closeEditExpenseModal() {
     document.getElementById('edit-expense-modal').classList.add('hidden');
@@ -113,6 +104,9 @@ function openEditExpenseConfirm() {
 
 document.addEventListener('DOMContentLoaded', () => {
     
+    // const currentPath = window.location.pathname;
+
+    // if (currentPath === '/incomes.php'){
     const editButtons = document.querySelectorAll('.editBtn');
 
     editButtons.forEach(btn => {
@@ -177,6 +171,77 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('delete-income-modal').classList.remove('hidden');
         });
     });
+    // }
 
+    // else if (currentPath === '/expenses.php'){
+    const expense_editButtons = document.querySelectorAll('.expense-editBtn');
+
+    expense_editButtons.forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault(); 
+
+            const id = btn.dataset.id;
+            const amount = btn.dataset.amount;
+            const desc = btn.dataset.description;
+            const rawDate = btn.dataset.date; 
+
+            document.getElementById('edit-expense-amount').value = amount;
+            document.getElementById('edit-expense-description').value = desc;
+            
+            if (rawDate) {
+                document.getElementById('edit-expense-date').value = rawDate.split(' ')[0];
+            }
+
+            const form = document.querySelector("#edit-expense-modal form");
+            
+            const existingIdInput = form.querySelector("input[name='id']");
+            if (existingIdInput) {
+                existingIdInput.remove();
+            }
+
+            const hiddenIdInput = document.createElement("input");
+            hiddenIdInput.type = "hidden";
+            hiddenIdInput.name = "id";
+            hiddenIdInput.value = id;
+            form.appendChild(hiddenIdInput);
+            
+            document.getElementById('edit-expense-modal').classList.remove('hidden');
+        });
+    });
+
+    const expense_deleteButtons = document.querySelectorAll('.expense-delete-item');
+
+    expense_deleteButtons.forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault(); 
+
+            const id = btn.dataset.id;
+            const amount = btn.dataset.amount;
+            const desc = btn.dataset.description;
+            const rawDate = btn.dataset.date; 
+
+            document.getElementById('delete-expense-amount').value = amount;
+            document.getElementById('delete-expense-description').value = desc;
+            
+            if (rawDate) {
+                document.getElementById('delete-expense-date').value = rawDate.split(' ')[0];
+            }
+
+            const form = document.querySelector("#delete-expense-modal form");
+
+            const hiddenIdInput = document.createElement("input");
+            hiddenIdInput.type = "hidden";
+            hiddenIdInput.name = "delete-id";
+            hiddenIdInput.value = id;
+            form.appendChild(hiddenIdInput);
+            
+            document.getElementById('delete-expense-modal').classList.remove('hidden');
+        });
+    });
+    // }
 
 });
+
+function closeDeleteExpenseModal() {
+    document.getElementById('delete-expense-modal').classList.add('hidden');
+}

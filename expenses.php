@@ -42,23 +42,23 @@ $expenses= $sql->fetchAll(PDO::FETCH_ASSOC);
                         $count = 0; 
                         foreach ($expenses as $expense) {
                             echo '<div class="item item-' . $count . ' flex justify-evenly">  
-                                    <div class="item-amount">' . htmlspecialchars($expenses['amount']) . '</div>
-                                    <div class="item-description">' . htmlspecialchars($expenses['description']) . '</div>
-                                    <div class="item-created_at">' . htmlspecialchars($expenses['income_date']) . '</div>
-                                    <div class="item-modified_at">' . htmlspecialchars($expenses['updated_at']) . '</div>
+                                    <div class="item-amount">' . htmlspecialchars($expense['amount']) . '</div>
+                                    <div class="item-description">' . htmlspecialchars($expense['description']) . '</div>
+                                    <div class="item-created_at">' . htmlspecialchars($expense['expense_date']) . '</div>
+                                    <div class="item-modified_at">' . htmlspecialchars($expense['updated_at']) . '</div>
                                     <div class="item-action-btn">
-                                    <button class="editBtn rounded-lg shadow-lg bg-orange-600 px-4 py-2" 
-                                        data-id="'.$expenses['id'].'" 
-                                        data-amount="'.$expenses['amount'].'"
-                                        data-description="'.$expenses['description'].'"
-                                        data-date="'.$expenses['expense_date'].'"
+                                    <button class="expense-editBtn rounded-lg shadow-lg bg-orange-600 px-4 py-2" 
+                                        data-id="'.$expense['id'].'" 
+                                        data-amount="'.$expense['amount'].'"
+                                        data-description="'.$expense['description'].'"
+                                        data-date="'.$expense['expense_date'].'"
                                         >modify
                                     </button>
-                                    <button class="delete-item rounded-lg shadow-lg bg-red-600 px-4 py-2"
-                                            data-id="'.$expenses['id'].'" 
-                                            data-amount="'.$expenses['amount'].'"
-                                            data-description="'.$expenses['description'].'"
-                                            data-date="'.$expenses['expense_date'].'"
+                                    <button class="expense-delete-item rounded-lg shadow-lg bg-red-600 px-4 py-2"
+                                            data-id="'.$expense['id'].'" 
+                                            data-amount="'.$expense['amount'].'"
+                                            data-description="'.$expense['description'].'"
+                                            data-date="'.$expense['expense_date'].'"
                                             >delete
                                     </button>
                                 </div>
@@ -83,20 +83,26 @@ $expenses= $sql->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <div class="flex gap-2 justify-end">
                 <button type="button" onclick="closeAddExpenseModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-                <input type="submit" name="add" value="Add" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Add</button>
+                <input type="submit" name="add" value="Add" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
             </div>
         </form>
     </div>
 
     <!-- Delete Expense Modal -->
     <div id="delete-expense-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 class="text-xl font-bold mb-4">Select Expense to Delete</h3>
-            <div id="delete-expense-list" class="space-y-2 mb-4 max-h-64 overflow-y-auto"></div>
-            <div class="flex gap-2 justify-end">
-                <button onclick="closeDeleteExpenseModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+        <form class="bg-white rounded-lg p-6 max-w-md w-full mx-4" action="expensesQueries.php" method="POST">
+            <h3 class="text-xl font-bold mb-4">Confim the deletion</h3>
+            <div id="delete-expense-list" class="space-y-2 mb-4 max-h-64 overflow-y-auto">
+                <input type="hidden" name="action" value="delete">
+                <input type="number" step="0.01" name="amount" id="delete-expense-amount" placeholder="Amount" disabled class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600" step="0.01">
+                <input type="text" name="description" id="delete-expense-description" placeholder="description" disabled class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600">
+                <input type="date" name="date" id="delete-expense-date" disabled class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600">
             </div>
-        </div>
+            <div class="flex gap-2 justify-end">
+                <button type="button" onclick="closeDeleteExpenseModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+                <input type="submit" name="delete" value="DELETE" class="px-4 py-2 bg-red-500 rounded hover:bg-red-600">
+            </div>
+        </form>
     </div>
 
     <!-- Edit Expense Modal -->
@@ -104,14 +110,15 @@ $expenses= $sql->fetchAll(PDO::FETCH_ASSOC);
         <form class="bg-white rounded-lg p-6 max-w-md w-full mx-4" action="expensesQueries.php" method="POST">
             <h3 class="text-xl font-bold mb-4">Edit Expense</h3>
             <div class="space-y-3 mb-4">
-                <input type="number" step="0.01" id="edit-expense-amount" placeholder="Amount" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-600" >
-                <input type="text" name="description" id="edit-expense-name" placeholder="Expense Description" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-600">
-                <input type="date" id="edit-expense-date" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-600">
+                <input type="hidden" name="action" value="edit">
+                <input type="number" name="new-amount" step="0.01" id="edit-expense-amount" placeholder="Amount" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-600" >
+                <input type="text" name="new-description" id="edit-expense-description" placeholder="Expense Description" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-600">
+                <input type="date" name="new-date" id="edit-expense-date" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-red-600">
 
             </div>
             <div class="flex gap-2 justify-end">
-                <button onclick="closeEditExpenseModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-                <input type="submit"name="save" value="save" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Save</button>
+                <button type="button" onclick="closeEditExpenseModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+                <input type="submit"name="save" value="save" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
             </div>
         </form>
     </div>
