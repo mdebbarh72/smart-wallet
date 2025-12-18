@@ -1,20 +1,20 @@
 <?php  
-// $sessionLifetime = 60 * 60 * 24;
-// 
-// session_set_cookie_params([
-    // 'lifetime' => $sessionLifetime,
-    // 'path'     => '/',
-    // 'secure'   => false, // true on HTTPS
-    // 'httponly' => true,
-    // 'samesite' => 'Strict'
-// ]);
-// 
-// session_start();
-// 
-// if (isset($_SESSION['user_id'])) {
-    // header("Location: home.php");
-    // exit();
-// 
+$sessionLifetime = 60 * 60 * 24;
+
+session_set_cookie_params([
+    'lifetime' => $sessionLifetime,
+    'path'     => '/',
+    'secure'   => false, // true on HTTPS
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
+
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    header("Location: home.php");
+    exit();
+}
 ?> 
 
 <!DOCTYPE html>
