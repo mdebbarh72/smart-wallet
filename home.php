@@ -17,6 +17,13 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+
+if (time() - $_SESSION['login_time'] > $sessionLifetime) {
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <?php  
@@ -96,6 +103,9 @@ if (!isset($_SESSION['user_id'])) {
                 <a href="#" class="hover:bg-blue-700 px-3 py-2 rounded">Home</a>
                 <a href="incomes.php" class="hover:bg-blue-700 px-3 py-2 rounded">Incomes</a>
                 <a href="expenses.php" class="hover:bg-blue-700 px-3 py-2 rounded">Expenses</a>
+                <a href="cards.php" class="hover:bg-blue-700 px-3 py-2 rounded">Cards</a>
+                <a href="#" class="hover:bg-blue-700 px-3 py-2 rounded">Transfers</a>
+                <a href="logout.php" class="hover:bg-blue-700 px-3 py-2 rounded">Logout</a>
             </div>
         </div>
     </nav>

@@ -33,11 +33,11 @@ if(!$user || !password_verify($password, $user['password']))
 
 $selectingIP= $pdo->prepare("SELECT ip_address FROM user_sessions WHERE user_id=?");
 $selectingIP->execute([$user['user_id']]);
-$IP=$selectingIP->fetch(PDO::FETCH_ASSOC);
+$IP=$selectingIP->fetchColumn();
 
 $new_ip = $_SERVER['REMOTE_ADDR'];
 
-if($IP!=$new_ip) {
+if($IP!==$new_ip) {
     
     $otp=generateOTP();
     $hashedotp= password_hash($otp, PASSWORD_DEFAULT);

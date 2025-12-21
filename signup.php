@@ -1,3 +1,33 @@
+<?php
+$sessionLifetime = 60 * 60 * 24;
+
+session_set_cookie_params([
+    'lifetime' => $sessionLifetime,
+    'path'     => '/',
+    'domain'   => '',
+    'secure'   => false,   
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
+
+session_start();
+
+if (isset($_SESSION['login_time'])) {
+    if (time() - $_SESSION['login_time'] > $sessionLifetime) {
+        session_unset();
+        session_destroy();
+        header("Location: login.php");
+        exit;
+    }
+} else {
+    
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">

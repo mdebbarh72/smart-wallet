@@ -47,6 +47,13 @@ if(password_verify($otp, $user_otp['otp']))
     $_SESSION['user_id'] = $user_id;
     $_SESSION['login_time'] = time();
 
+    $user_ip = $_SERVER['REMOTE_ADDR'];
+    $sql= $pdo->prepare("INSERT INTO user_sessions (user_id, ip_address) VALUES (?, ?) 
+                         ON DUPLICATE KEY UPDATE
+                         user_id = VALUES(user_id),
+                         ip_address = VALUES(ip_address)");
+    $sql->execute([$user_id, $user_ip]);
+
     header("Location: home.php");
     exit;
 }

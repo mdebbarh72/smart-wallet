@@ -4,16 +4,24 @@ $sessionLifetime = 60 * 60 * 24;
 session_set_cookie_params([
     'lifetime' => $sessionLifetime,
     'path'     => '/',
-    'secure'   => false, // true on HTTPS
+    'secure'   => false, 
     'httponly' => true,
     'samesite' => 'Strict'
 ]);
 
 session_start();
 
-if (isset($_SESSION['user_id'])) {
-    header("Location: home.php");
-    exit();
+if (isset($_SESSION['login_time'])) {
+    if (time() - $_SESSION['login_time'] > $sessionLifetime) {
+        session_unset();
+        session_destroy();
+        header("Location: login.php");
+        exit;
+    }
+} else {
+    
+    session_unset();
+    session_destroy();
 }
 ?> 
 
